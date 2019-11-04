@@ -1,0 +1,9 @@
+1Yu6RVtZqOnUOfgTOMr5parEcGblAVRJx
+
+sync file directory
+
+gdrive sync upload ~/torrent 1Yu6RVtZqOnUOfgTOMr5parEcGblAVRJx
+
+gdrive sync upload --dry-run ~/torrent 1Yu6RVtZqOnUOfgTOMr5parEcGblAVRJx
+
+drive sync upload --dry-run ${HOME}/torrent 1G2wsJXuVN5UzyUzGSKlnZuu3wp_MgHw0
