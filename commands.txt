@@ -6,4 +6,6 @@ gdrive sync upload ~/torrent 1Yu6RVtZqOnUOfgTOMr5parEcGblAVRJx
 
 gdrive sync upload --dry-run ~/torrent 1Yu6RVtZqOnUOfgTOMr5parEcGblAVRJx
 
-drive sync upload --dry-run ${HOME}/torrent 1G2wsJXuVN5UzyUzGSKlnZuu3wp_MgHw0
+ 1G2wsJXuVN5UzyUzGSKlnZuu3wp_MgHw0
+
+drive sync upload --dry-run ${HOME}/downloads 1nw_Bit8r6L5AqSPmHI8gvX_YXFSUMrpk
