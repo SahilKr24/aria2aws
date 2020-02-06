@@ -138,12 +138,12 @@ Now we can check if the server is running or not.
     
 We should get an output of something like this:
 
-[](images/ap2status.PNG)
+![](images/ap2status.PNG)
 
 > You need to edit the `security groups` and open `port 80 (tcp)` to listen for incoming connection on aws console.
 > Since we are accessing the console now, we might as well open a couple of other ports so that *aria2* 
 
-[](awssec.PNG)a
+![](awssec.PNG)
 
 You can now enter the public ip of your server in a browser and you will be greeted with a default apache install page.
 
@@ -164,5 +164,5 @@ Since the files are being extracted to */var/www/html/aria2* folder, so to acces
     
 Check if the following page works. It it does you will be greeted with this page.
 
-[](images/ariang.PNG)
+![](images/ariang.PNG)
 
