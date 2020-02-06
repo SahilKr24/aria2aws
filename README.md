@@ -77,7 +77,7 @@ and see if aria2 is running.
 
 ### *Step 3:* Setting up rsync
 
-To install rclone on Linux/macOS/BSD systems, run:
+To install rclone run:
 
         $ curl https://rclone.org/install.sh | sudo bash
         
@@ -102,6 +102,7 @@ Well, we already have a shell script on the repository so go ahead and fetch tha
 
         $ cd ~
         $ wget https://github.com/SahilKr24/aria2aws/blob/master/uploader.sh
+        $ chmod +x uploader.sh
         
 The script is very simple. It works on the concept that when aria2 is downloading files an *.aria2* sesssion file is placed in the folder where the file is being downloaded i.e. in our case the *downlaods* folder. The script checks the number of files having an *aria2.conf*, if the number is 0 ,it concludes that no files are being downloaded on the moment and runs the commands for rclone.
 
@@ -117,8 +118,51 @@ Since there are no downloaded files right now so the script wont do anything.
 
 ### *Step 5:* Installing apache2 server to host the front-end server
 
+Run the following command to install Apache2:
 
+    $ sudo apt install apache2
+    
+then check if the install was successful
 
+    $ apache2 -version
+    
+[](images/apachev.PNG)
+    
+Once the installation is verified, we need to add firewall exceptions. So run the following commands:
 
+    $ sudo ufw allow 'Apache'
+    
+Now we can check if the server is running or not.
 
+    $ sudo systemctl status apache2
+    
+We should get an output of something like this:
+
+[](images/ap2status.PNG)
+
+> You need to edit the `security groups` and open `port 80 (tcp)` to listen for incoming connection on aws console.
+> Since we are accessing the console now, we might as well open a couple of other ports so that *aria2* 
+
+[](awssec.PNG)a
+
+You can now enter the public ip of your server in a browser and you will be greeted with a default apache install page.
+
+Once, this is done we will now install `AriaNG` which is a front-end client for aria2. Huge thanks to @mayswind for the repository.
+
+Check out the repository at [AriaNG](https://github.com/mayswind/AriaNg)
+
+To install AriaNG run the following code in order:
+
+    $ sudo apt-get install nginx
+    $ cd ~
+    $ wget https://github.com/mayswind/AriaNg/releases/download/1.1.4/AriaNg-1.1.4.zip
+    $ sudo unzip AriaNg-1.1.4.zip -d /var/www/html/aria2
+    
+Since the files are being extracted to */var/www/html/aria2* folder, so to access the webpage you need to go to
+
+    http://server-ip/aria2 
+    
+Check if the following page works. It it does you will be greeted with this page.
+
+[](images/ariang.PNG)
 
