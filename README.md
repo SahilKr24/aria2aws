@@ -2,7 +2,7 @@
 
 ## Description
 
-This project uses an instance based on aws(amazon web services) ec2 to download files on via aria2(command-line downlaod utility) and uplaoding them using rsync to your personal google drive account for easy accesss. Front end is handled by **[AriaNG](https://github.com/mayswind/AriaNg)**. This runs off a linux based server and has a bash script running on a cronjob that checks when the downloads are complete and then starts to upload them eliminating the need for manual intervention. Once the downlaod is complete the script the deletes the file from the server.
+This project uses an instance based on aws(amazon web services) ec2 to download files on via aria2(command-line downlaod utility) and uplaoding them using  rclone to your personal google drive account for easy accesss. Front end is handled by **[AriaNG](https://github.com/mayswind/AriaNg)**. This runs off a linux based server and has a bash script running on a cronjob that checks when the downloads are complete and then starts to upload them eliminating the need for manual intervention. Once the downlaod is complete the script the deletes the file from the server.
 
 ---
 
@@ -16,10 +16,11 @@ This configuration is eligible for free tier for 1 year. There are various guide
 ## Table of Contents:
 1. SSHing into and setting up the server.
 2. Installing aria2c and setting up *aria2.conf* file.
-3. Setting up *rsync* to upload files to personal google drive.
+3. Setting up *rclone* to upload files to personal google drive.
 4. Writing a shell script to upload files when downlaod completes automatically.
 5. Installing *apache2 server* to host front-end webpage.
 6. Setting up RPC token key and load testing.
+7. Automating the whole process.
 
 ----
 
@@ -30,7 +31,7 @@ This configuration is eligible for free tier for 1 year. There are various guide
 -Use your preferred ssh client to connect to your server. If you have set a new server this might be using a private *.pem* file or you can enable *passwordauthentication* to *yes* and use any terminal to ssh on port 22.
 
     $ ssh username@your-ip -p 22
-    
+
 -update the packages on your instance.
 
     $ sudo apt update
@@ -75,5 +76,49 @@ and see if aria2 is running.
 -We have successfully installed aria2.
 
 ### *Step 3:* Setting up rsync
+
+To install rclone on Linux/macOS/BSD systems, run:
+
+        $ curl https://rclone.org/install.sh | sudo bash
+        
+Once rsync is installed we need to set it up for google drive.
+Here is the link for the official documentation for setting up rync with google drive.
+
+[official documnetation](https://rclone.org/drive/)
+
+>but I suggest to follow this quick and efficient guide on *medium*
+
+[config rclone for your google drive](https://medium.com/@houlahop/rclone-how-to-copy-files-from-a-servers-filesystem-to-google-drive-aaf21c615c5d)
+
+> **please remember to give the name `googledrive` for our remote name for now.**
+
+Once rclone is set up we will create a folder called *downlaoads* in our home directory where aria2 will be storing the downloaded files. You can name the folder whatever you want but then the *aria2.conf* will have to be modified which we will see later.
+
+Now that rclone is set up, we will proceed to the fun part that is writing a shell script to upload files to drive from the *downloads* folder.
+
+### *Step 4:* Writing the shell script
+
+Well, we already have a shell script on the repository so go ahead and fetch that 
+
+        $ cd ~
+        $ wget https://github.com/SahilKr24/aria2aws/blob/master/uploader.sh
+        
+The script is very simple. It works on the concept that when aria2 is downloading files an *.aria2* sesssion file is placed in the folder where the file is being downloaded i.e. in our case the *downlaods* folder. The script checks the number of files having an *aria2.conf*, if the number is 0 ,it concludes that no files are being downloaded on the moment and runs the commands for rclone.
+
+This was necessary because we are going to run our script every 5 minutues automatically, if we don't check for the incomplete downloads then the files being downloaded will be pushed to the google drive which is undesirable behavior. In cases where the download is paused, the *.aria2* file will stay preventing *rclone* from uploading them. When a download fails, the *.aria2* file is deleted automatically along with the partically downloaded data.
+
+We are using the `move` command for *rclone* since we have limited space on our server and don't want to cache files on it. One key advantage it has over *gdrive* is that if you modify the folder from google drive web i.e. delete a file on the cloud the sync won't break as in cases with sync if the destination doesn't match with the local directory records the sync wont happen.
+
+To execute the script just run 
+
+    $ bash uploader.sh
+    
+Since there are no downloaded files right now so the script wont do anything.
+
+### *Step 5:* Installing apache2 server to host the front-end server
+
+
+
+
 
 
