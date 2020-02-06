@@ -126,7 +126,7 @@ then check if the install was successful
 
     $ apache2 -version
     
-[](images/apachev.PNG)
+![](images/apachev.PNG)
     
 Once the installation is verified, we need to add firewall exceptions. So run the following commands:
 
@@ -143,7 +143,7 @@ We should get an output of something like this:
 > You need to edit the `security groups` and open `port 80 (tcp)` for the instance to listen for incoming connection on aws console.
 > Since we are accessing the console now, we might as well open a couple of other ports so that *aria2* can listen on it's default port and communicate with it's front-end client.
 
-![](sec.PNG)
+![](images/sec.PNG)
 
 You can now enter the public ip of your server in a browser and you will be greeted with a default apache install page.
 
@@ -205,6 +205,8 @@ Press CTRL + X  to exit and return to terminal.
 */5 indicates that the script will be excuted every 5 minutues. We will not be going into the technical details of cronjob at this moment.
 
 We are using `run-one` so that there are never more than one copy of the script running at a instant. This is to ensure that if a file takes more than 5 mins to upload, there won't be another srcipt excecuted that starts uploading the same file(s).
+
+## CONGRATULATIONS. You have successfully built a download server based on aws.
 
 
 
