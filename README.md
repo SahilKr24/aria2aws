@@ -70,8 +70,10 @@ We can now
     
 and see if aria2 is running. 
 
-![](images/ariarunning.png)
+![](images/ariarunning.PNG)
 
 -We have successfully installed aria2.
 
 ### *Step 3:* Setting up rsync
+
+
