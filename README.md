@@ -2,7 +2,7 @@
 
 ## Description
 
-This project uses an instance based on aws(amazon web services) ec-2 to download files on via [aria2](https://github.com/aria2/aria2)(command-line downlaod utility) and uplaoding them using  rclone to your personal google drive account for easy accesss. Front end is handled by **[AriaNG](https://github.com/mayswind/AriaNg)**. This runs off a linux based server and has a bash script running on a cronjob that checks when the downloads are complete and then starts to upload them eliminating the need for manual intervention. Once the downlaod is complete the script the deletes the file from the server.
+This project uses an instance based on aws(amazon web services) ec-2 to download files on via [aria2](https://github.com/aria2/aria2)(command-line download utility) and uplaoding them using rclone to your personal google drive account for easy access. Front end is handled by **[AriaNG](https://github.com/mayswind/AriaNg)**. This runs off a linux based server and has a bash script running on a cronjob that checks when the downloads are complete and then starts to upload them eliminating the need for manual intervention. Once the download is complete the script the deletes the file from the server.
 
 ---
 
@@ -17,7 +17,7 @@ This configuration is eligible for free tier for 1 year. There are various guide
 1. SSHing into and setting up the server.
 2. Installing aria2c and setting up *aria2.conf* file.
 3. Setting up *rclone* to upload files to personal google drive.
-4. Writing a shell script to upload files when downlaod completes automatically.
+4. Writing a shell script to upload files when download completes automatically.
 5. Installing *apache2 server* to host front-end webpage.
 6. Setting up RPC token key and load testing.
 7. Automating the whole process.
@@ -26,7 +26,7 @@ This configuration is eligible for free tier for 1 year. There are various guide
 
 ## Installation
 
-### *Step 1:* SShing into your server
+### *Step 1:* SSH-ing into your server
 
 -Use your preferred ssh client to connect to your server. If you have set a new server this might be using a private *.pem* file or you can enable *passwordauthentication* to *yes* and use any terminal to ssh on port 22.
 
@@ -37,7 +37,7 @@ This configuration is eligible for free tier for 1 year. There are various guide
     $ sudo apt update
     $ sudo apt upgrade
     
-### *Step 2:* Installing aria2c
+### *Step 2:* Installing aria2
 
 -Now we will install aria2 on the server. Since it is a ubuntu machine we will be covering only ubuntu here.
 
@@ -75,13 +75,13 @@ and see if aria2 is running.
 
 -We have successfully installed aria2.
 
-### *Step 3:* Setting up rsync
+### *Step 3:* Setting up rclone
 
 To install rclone run:
 
         $ curl https://rclone.org/install.sh | sudo bash
         
-Once rsync is installed we need to set it up for google drive.
+Once rclone is installed we need to set it up for google drive.
 Here is the link for the official documentation for setting up rync with google drive.
 
 [official documnetation](https://rclone.org/drive/)
@@ -104,7 +104,7 @@ Well, we already have a shell script on the repository so go ahead and fetch tha
         $ wget https://github.com/SahilKr24/aria2aws/blob/master/uploader.sh
         $ chmod +x uploader.sh
         
-The script is very simple. It works on the concept that when aria2 is downloading files an *.aria2* sesssion file is placed in the folder where the file is being downloaded i.e. in our case the *downlaods* folder. The script checks the number of files having an *aria2.conf*, if the number is 0 ,it concludes that no files are being downloaded on the moment and runs the commands for rclone.
+The script is very simple. It works on the concept that when aria2 is downloading files an *.aria2* sesssion file is placed in the folder where the file is being downloaded i.e. in our case the *downloads* folder. The script checks the number of files having an *aria2.conf*, if the number is 0 ,it concludes that no files are being downloaded on the moment and runs the commands for rclone.
 
 This was necessary because we are going to run our script every 5 minutues automatically, if we don't check for the incomplete downloads then the files being downloaded will be pushed to the google drive which is undesirable behavior. In cases where the download is paused, the *.aria2* file will stay preventing *rclone* from uploading them. When a download fails, the *.aria2* file is deleted automatically along with the partically downloaded data.
 
@@ -178,7 +178,7 @@ Aria2 Status will show “Connected” if the token is correct.
 
 Congrats your front-end GUI, aria2 and server is now set up.
 
-Throw some files to downlaod using the `+` icon on the left.
+Throw some files to download using the `+` icon on the left.
 
 ### *Step 7:*  Automating the whole process.
 
