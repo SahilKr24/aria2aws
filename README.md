@@ -2,7 +2,7 @@
 
 ## Description
 
-This project uses an instance based on aws(amazon web services) ec2 to download files on via aria2(command-line downlaod utility) and uplaoding them using  rclone to your personal google drive account for easy accesss. Front end is handled by **[AriaNG](https://github.com/mayswind/AriaNg)**. This runs off a linux based server and has a bash script running on a cronjob that checks when the downloads are complete and then starts to upload them eliminating the need for manual intervention. Once the downlaod is complete the script the deletes the file from the server.
+This project uses an instance based on aws(amazon web services) ec-2 to download files on via [aria2](https://github.com/aria2/aria2)(command-line downlaod utility) and uplaoding them using  rclone to your personal google drive account for easy accesss. Front end is handled by **[AriaNG](https://github.com/mayswind/AriaNg)**. This runs off a linux based server and has a bash script running on a cronjob that checks when the downloads are complete and then starts to upload them eliminating the need for manual intervention. Once the downlaod is complete the script the deletes the file from the server.
 
 ---
 
@@ -140,10 +140,10 @@ We should get an output of something like this:
 
 ![](images/ap2status.PNG)
 
-> You need to edit the `security groups` and open `port 80 (tcp)` to listen for incoming connection on aws console.
-> Since we are accessing the console now, we might as well open a couple of other ports so that *aria2* 
+> You need to edit the `security groups` and open `port 80 (tcp)` for the instance to listen for incoming connection on aws console.
+> Since we are accessing the console now, we might as well open a couple of other ports so that *aria2* can listen on it's default port and communicate with it's front-end client.
 
-![](awssec.PNG)
+![](sec.PNG)
 
 You can now enter the public ip of your server in a browser and you will be greeted with a default apache install page.
 
@@ -162,7 +162,49 @@ Since the files are being extracted to */var/www/html/aria2* folder, so to acces
 
     http://server-ip/aria2 
     
-Check if the following page works. It it does you will be greeted with this page.
+Check if the following page works. If it does you will be greeted with this page.
 
 ![](images/ariang.PNG)
+
+### *Step 6:*  Setting up RPC token key and load testing.
+
+Notice on the left side the tab *Aria2 Status* says disconnected. This is because we need to enter the `rpc-secret` token present in the *aria2.conf* into
+
+>AriaNg Settings->RPC({server-ip})
+
+It's set to `123456` by default and we must change it after the setup.
+
+Aria2 Status will show “Connected” if the token is correct.
+
+Congrats your front-end GUI, aria2 and server is now set up.
+
+Throw some files to downlaod using the `+` icon on the left.
+
+### *Step 7:*  Automating the whole process.
+
+This is the crucial part of the installation. Upto this point your server can download files and upload them but the point in between where you have to run the *uploader.sh* script is still manual.
+
+To avoid this problem we will be taking help of *cronjob*. Cronjob allows up to schedule a certain task at a certain interval without user intervention. Setting up a *cronjob* is a bit tricky so follow the steps carefully.
+
+    $ cd ~
+    $ crontab -e
+    
+default editor should pop up to edit the crontab file. Assuming its nano, insert the following line at the end of the file.
+
+> */5 * * * * run-one /home/sahil/uploader.sh
+
+#### Note that relative directory ${HOME} will NOT work here, so you need to replace *sahil* by the username you have set up on your machine. 
+
+Your file should look like this.
+
+![](images/cron.PNG)
+
+Press CTRL + O to write changes to the file.
+Press CTRL + X  to exit and return to terminal.
+
+*/5 indicates that the script will be excuted every 5 minutues. We will not be going into the technical details of cronjob at this moment.
+
+We are using `run-one` so that there are never more than one copy of the script running at a instant. This is to ensure that if a file takes more than 5 mins to upload, there won't be another srcipt excecuted that starts uploading the same file(s).
+
+
 
