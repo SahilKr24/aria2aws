@@ -2,7 +2,7 @@
 
 ## Description
 
-This project uses an instance based on aws(amazon web services) ec-2 to download files on via [aria2](https://github.com/aria2/aria2)(command-line download utility) and uplaoding them using rclone to your personal google drive account for easy access. Front end is handled by **[AriaNG](https://github.com/mayswind/AriaNg)**. This runs off a linux based server and has a bash script running on a cronjob that checks when the downloads are complete and then starts to upload them eliminating the need for manual intervention. Once the download is complete the script the deletes the file from the server.
+This project uses an instance based on aws(amazon web services) ec-2 to download files on via **[aria2](https://github.com/aria2/aria2)**(command-line download utility) and uploading them using rclone to your personal google drive account for easy access. Front end is handled by **[AriaNG](https://github.com/mayswind/AriaNg)**. This runs off a linux based server and has a bash script running on a cronjob that checks when the downloads are complete and then starts to upload them, eliminating the need for manual intervention. Once the download is complete the script then deletes the file from the server.
 
 ---
 
