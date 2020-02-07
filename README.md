@@ -9,12 +9,12 @@ This project uses an instance based on aws(amazon web services) ec-2 to download
 ### Perquisites
 * Knowing your way around a command-line.(MUST! XD)
 * An ec2 instance on aws with the following configuration(1-vCPU, 1-gig RAM and 30GB of storage).
-This configuration is eligible for free tier for 1 year. There are various guides on the internet that show how to set up an instance.*
+This configuration is eligible for free tier for 1 year. There are various guides on the internet that show how to set up an instance.
 * A public IP(elastic IP) to connect to your system and ssh/putty connection to login into the server.
 * Knowledge of opening various ports to your instance via security groups.
 
 ## Table of Contents:
-1. SSHing into and setting up the server.
+1. SSH-ing into and setting up the server.
 2. Installing aria2c and setting up *aria2.conf* file.
 3. Setting up *rclone* to upload files to personal google drive.
 4. Writing a shell script to upload files when download completes automatically.
@@ -59,7 +59,7 @@ We need to start aria2 now so execute the command below with the path of the *co
 
     $ aria2c --conf-path={aria2 configuration file} -D
     
-    //assuming the file is in home disrectory
+    //assuming the file is in home directory
     
     $ aria2c --conf-path=aria2.conf -D
     
@@ -84,7 +84,7 @@ To install rclone run:
 Once rclone is installed we need to set it up for google drive.
 Here is the link for the official documentation for setting up rync with google drive.
 
-[official documnetation](https://rclone.org/drive/)
+[official documentation](https://rclone.org/drive/)
 
 >but I suggest to follow this quick and efficient guide on *medium*
 
@@ -92,7 +92,7 @@ Here is the link for the official documentation for setting up rync with google 
 
 > **please remember to give the name `googledrive` for our remote name for now.**
 
-Once rclone is set up we will create a folder called *downlaoads* in our home directory where aria2 will be storing the downloaded files. You can name the folder whatever you want but then the *aria2.conf* will have to be modified which we will see later.
+Once rclone is set up we will create a folder called *downloads* in our home directory where aria2 will be storing the downloaded files. You can name the folder whatever you want but then the *aria2.conf* will have to be modified which we will see later.
 
 Now that rclone is set up, we will proceed to the fun part that is writing a shell script to upload files to drive from the *downloads* folder.
 
@@ -104,11 +104,11 @@ Well, we already have a shell script on the repository so go ahead and fetch tha
         $ wget https://github.com/SahilKr24/aria2aws/blob/master/uploader.sh
         $ chmod +x uploader.sh
         
-The script is very simple. It works on the concept that when aria2 is downloading files an *.aria2* sesssion file is placed in the folder where the file is being downloaded i.e. in our case the *downloads* folder. The script checks the number of files having an *aria2.conf*, if the number is 0 ,it concludes that no files are being downloaded on the moment and runs the commands for rclone.
+The script is very simple. It works on the concept that when aria2 is downloading files an *.aria2* session file is placed in the folder where the file is being downloaded i.e. in our case the *downloads* folder. The script checks the number of files having an *aria2.conf*, if the number is 0 ,it concludes that no files are being downloaded on the moment and runs the commands for rclone.
 
-This was necessary because we are going to run our script every 5 minutues automatically, if we don't check for the incomplete downloads then the files being downloaded will be pushed to the google drive which is undesirable behavior. In cases where the download is paused, the *.aria2* file will stay preventing *rclone* from uploading them. When a download fails, the *.aria2* file is deleted automatically along with the partically downloaded data.
+This was necessary because we are going to run our script every 5 minutes automatically, if we don't check for the incomplete downloads then the files being downloaded will be pushed to the google drive which is undesirable behaviour. In cases where the download is paused, the *.aria2* file will stay preventing *rclone* from uploading them. When a download fails, the *.aria2* file is deleted automatically along with the partially downloaded data.
 
-We are using the `move` command for *rclone* since we have limited space on our server and don't want to cache files on it. One key advantage it has over *gdrive* is that if you modify the folder from google drive web i.e. delete a file on the cloud the sync won't break as in cases with sync if the destination doesn't match with the local directory records the sync wont happen.
+We are using the `move` command for *rclone* since we have limited space on our server and don't want to cache files on it. One key advantage it has over *gdrive* is that if you modify the folder from google drive web i.e. delete a file on the cloud the sync won't break as in cases with sync if the destination doesn't match with the local directory records the sync won't happen.
 
 To execute the script just run 
 
@@ -145,7 +145,7 @@ We should get an output of something like this:
 
 ![](images/sec.PNG)
 
-You can now enter the public ip of your server in a browser and you will be greeted with a default apache install page.
+You can now enter the public IP of your server in a browser and you will be greeted with a default apache install page.
 
 Once, this is done we will now install `AriaNG` which is a front-end client for aria2. Huge thanks to @mayswind for the repository.
 
@@ -184,7 +184,7 @@ Throw some files to download using the `+` icon on the left.
 
 This is the crucial part of the installation. Upto this point your server can download files and upload them but the point in between where you have to run the *uploader.sh* script is still manual.
 
-To avoid this problem we will be taking help of *cronjob*. Cronjob allows up to schedule a certain task at a certain interval without user intervention. Setting up a *cronjob* is a bit tricky so follow the steps carefully.
+To avoid this problem, we will be taking help of *cronjob*. Cronjob allows up to schedule a certain task at a certain interval without user intervention. Setting up a *cronjob* is a bit tricky so follow the steps carefully.
 
     $ cd ~
     $ crontab -e
@@ -202,9 +202,9 @@ Your file should look like this.
 Press CTRL + O to write changes to the file.
 Press CTRL + X  to exit and return to terminal.
 
-*/5 indicates that the script will be excuted every 5 minutues. We will not be going into the technical details of cronjob at this moment.
+*/5 indicates that the script will be executed every 5 minutes. We will not be going into the technical details of cronjob at this moment.
 
-We are using `run-one` so that there are never more than one copy of the script running at a instant. This is to ensure that if a file takes more than 5 mins to upload, there won't be another srcipt excecuted that starts uploading the same file(s).
+We are using `run-one` so that there are never more than one copy of the script running at a instant. This is to ensure that if a file takes more than 5 mins to upload, there won't be another script executed that starts uploading the same file(s).
 
 #### CONGRATULATIONS. You have successfully built a download server based on aws.
 
@@ -231,7 +231,7 @@ Remember to keep the `seed-time = 0` so that when torrent files are finished dow
 
 Now, we have set up all the required values for aria2, you can use your download server.
 
->AWS provides 15GB of outgoing data i.e. from server to google drive in a calender month so keep the limit in mind failing which if might result in *additional charges*.
+>AWS provides 15GB of outgoing data i.e. from server to google drive in a calendar month so keep the limit in mind failing which if might result in *additional charges*.
 
 ## Demo
 Please visit [http://3.1.95.63/aria2](http://3.1.95.63/aria2)
