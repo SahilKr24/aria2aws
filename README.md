@@ -170,7 +170,7 @@ Check if the following page works. If it does you will be greeted with this page
 
 Notice on the left side the tab *Aria2 Status* says disconnected. This is because we need to enter the `rpc-secret` token present in the *aria2.conf* into
 
->AriaNg Settings->RPC({server-ip})
+>AriaNg Settings->RPC({server-ip})->Aria2 RPC Secret Token
 
 It's set to `123456` by default and we must change it after the setup.
 
@@ -206,7 +206,41 @@ Press CTRL + X  to exit and return to terminal.
 
 We are using `run-one` so that there are never more than one copy of the script running at a instant. This is to ensure that if a file takes more than 5 mins to upload, there won't be another srcipt excecuted that starts uploading the same file(s).
 
-## CONGRATULATIONS. You have successfully built a download server based on aws.
+#### CONGRATULATIONS. You have successfully built a download server based on aws.
+
+## Usage:
+
+---
+
+Now that we have successfully set up our server, we should now change the `rpc-sercet` key to something other than 123456 to prevent unauthorised access. To do that, we need to edit the our *aria2.conf* file.
+
+    $ cd ~
+    $ sudo nano aria2.conf
+    
+You should see nano pop up with the following values.
+
+![](conf.PNG)
+
+Find the *rpc-token* data and change it from default to whatever key you want.
+
+Remember to update the `Aria2 RPC Secret Token` on our front-end.
+
+Here you will also find a lot of values which can be used to change the behaviour of aria2. You can read about it in the aria2 documentation.
+
+Remember to keep the `seed-time = 0` so that when torrent files are finished downloading the *.aria2* file will be removed else if the torrent is seeding it's assumed as a download in progress. So the uploader script will not acknowledge that the file has been downloaded.
+
+Now, we have set up all the required values for aria2, you can use your download server.
+
+>AWS provides 15GB of outgoing data i.e. from server to google drive in a calender month so keep the limit in mind failing which if might result in *additional charges*.
+
+## Demo
+Please visit [http://3.1.95.63/aria2](http://3.1.95.63/aria2)
+
+## License:
+[MIT](https://github.com/SahilKr24/aria2aws/blob/master/LICENSE)
+
+
+
 
 
 
