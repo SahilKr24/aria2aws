@@ -219,7 +219,7 @@ Now that we have successfully set up our server, we should now change the `rpc-s
     
 You should see nano pop up with the following values.
 
-![](conf.PNG)
+![](images/conf.PNG)
 
 Find the *rpc-token* data and change it from default to whatever key you want.
 
@@ -238,9 +238,3 @@ Please visit [http://3.1.95.63/aria2](http://3.1.95.63/aria2)
 
 ## License:
 [MIT](https://github.com/SahilKr24/aria2aws/blob/master/LICENSE)
-
-
-
-
-
-
